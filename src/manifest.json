@@ -6,6 +6,9 @@
   "background": {
     "service_worker": "background.bundle.js"
   },
+  "permissions": [
+    "tabs"
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon-34.png"
@@ -15,11 +18,12 @@
   },
   "content_scripts": [
     {
+      "run_at": "document_start",
       "matches": [
-        "http://*/*",
-        "https://*/*",
-        "<all_urls>"
+        "https://*.youtube.com/*",
+        "https://www.youtube-nocookie.com/embed/*"
       ],
+      "all_frames": true,
       "js": [
         "contentScript.bundle.js"
       ],
