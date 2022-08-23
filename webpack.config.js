@@ -33,6 +33,12 @@ if (fileSystem.existsSync(secretsPath)) {
   alias['secrets'] = secretsPath;
 }
 
+// {
+//   from: 'src/scripts/injectScript.ts',
+//   to: '[name].[ext]',
+//   force: true,
+// },
+
 var options = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
@@ -41,6 +47,7 @@ var options = {
     sidebar: path.join(__dirname, 'src', 'pages', 'Sidebar', 'index.jsx'),
     background: path.join(__dirname, 'src', 'scripts', 'background.ts'),
     contentScript: path.join(__dirname, 'src', 'scripts', 'contentScript.ts'),
+    injectScript: path.join(__dirname, 'src', 'scripts', 'injectScript.ts'),
   },
   chromeExtensionBoilerplate: {
     notHotReload: ['background', 'contentScript', 'devtools'],
@@ -128,11 +135,6 @@ var options = {
               })
             );
           },
-        },
-        {
-          from: 'src/scripts/injectScript.ts',
-          to: '[name].[ext]',
-          force: true,
         },
         {
           from: 'src/assets/img/icon-128.png',
