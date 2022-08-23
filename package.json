@@ -10,7 +10,8 @@
   "scripts": {
     "build": "node utils/build.js",
     "start": "node utils/webserver.js",
-    "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
+    "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
+    "lint": "eslint src/**/*.*"
   },
   "dependencies": {
     "@hot-loader/react-dom": "^17.0.2",
@@ -26,6 +27,8 @@
     "@types/chrome": "^0.0.177",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.34.0",
+    "@typescript-eslint/parser": "^5.34.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.3",
     "babel-preset-react-app": "^10.0.1",
@@ -44,7 +47,7 @@
     "html-loader": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",
     "node-sass": "^6.0.1",
-    "prettier": "^2.5.1",
+    "prettier": "^2.7.1",
     "sass-loader": "^12.4.0",
     "source-map-loader": "^3.0.1",
     "style-loader": "^3.3.1",

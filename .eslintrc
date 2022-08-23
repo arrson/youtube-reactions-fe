@@ -1,10 +1,17 @@
 {
-  "extends": "react-app",
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "react-app"
+  ],
   "globals": {
     "chrome": "readonly"
   },
-  "indent": [
-    "error",
-    2
-  ]
+  "rules": {
+    "indent": ["error", 2 ]
+  }
 }

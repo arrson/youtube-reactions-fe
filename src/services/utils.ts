@@ -1,7 +1,7 @@
 // Return video id or false
 export const youtubeParser = (url: string) => {
   var regExp =
-    /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/; // eslint-disable-line
   var match = url.match(regExp);
-  return match && match[7].length == 11 ? match[7] : false;
+  return match && match[7].length === 11 ? match[7] : false;
 };
