@@ -1,7 +1,10 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client'
 import Sidebar from './Sidebar';
 
-render(<Sidebar />, window.document.querySelector('#sidebar-extention-container'));
+const container = document.getElementById('sidebar-extention-container');
+if (container) {
+  createRoot(container).render(<Sidebar />);
+}
 
 if (module.hot) module.hot.accept();

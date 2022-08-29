@@ -1,22 +1,19 @@
-var webpack = require('webpack'),
-  path = require('path'),
-  fileSystem = require('fs-extra'),
-  env = require('./utils/env'),
-  CopyWebpackPlugin = require('copy-webpack-plugin'),
-  HtmlWebpackPlugin = require('html-webpack-plugin'),
-  TerserPlugin = require('terser-webpack-plugin');
-var { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
+const fileSystem = require('fs-extra');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
-var alias = {
-  'react-dom': '@hot-loader/react-dom',
-};
-
-// load the secrets
-var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js');
-
-var fileExtensions = [
+const alias = {};
+const secretsPath = path.join(__dirname, 'secrets.' + NODE_ENV + '.js');
+const fileExtensions = [
   'jpg',
   'jpeg',
   'png',
@@ -33,14 +30,8 @@ if (fileSystem.existsSync(secretsPath)) {
   alias['secrets'] = secretsPath;
 }
 
-// {
-//   from: 'src/scripts/injectScript.ts',
-//   to: '[name].[ext]',
-//   force: true,
-// },
-
-var options = {
-  mode: process.env.NODE_ENV || 'development',
+const options = {
+  mode: isDevelopment ? 'development' : 'production',
   entry: {
     options: path.join(__dirname, 'src', 'pages', 'Options', 'index.jsx'),
     popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.jsx'),
@@ -48,9 +39,6 @@ var options = {
     background: path.join(__dirname, 'src', 'scripts', 'background.ts'),
     contentScript: path.join(__dirname, 'src', 'scripts', 'contentScript.ts'),
     injectScript: path.join(__dirname, 'src', 'scripts', 'injectScript.ts'),
-  },
-  chromeExtensionBoilerplate: {
-    notHotReload: ['background', 'contentScript', 'devtools'],
   },
   output: {
     filename: '[name].bundle.js',
@@ -118,7 +106,10 @@ var options = {
     new CleanWebpackPlugin({ verbose: false }),
     new webpack.ProgressPlugin(),
     // expose and write the allowed env vars on the compiled bundle
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+    }),
+    isDevelopment && new ReactRefreshPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -166,13 +157,18 @@ var options = {
       chunks: ['sidebar'],
       cache: false,
     }),
-  ],
+  ].filter(Boolean),
   infrastructureLogging: {
     level: 'info',
   },
+  devServer: {
+    devMiddleware: {
+      writeToDisk: true,
+    },
+  },
 };
 
-if (env.NODE_ENV === 'development') {
+if (isDevelopment) {
   options.devtool = 'cheap-module-source-map';
 } else {
   options.optimization = {

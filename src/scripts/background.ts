@@ -12,13 +12,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
   if (changeInfo.status === 'complete' && tab?.url?.includes('http')) {
     chrome.scripting.executeScript(
-      { target: { tabId: tabId }, files: ['./injectScript.bundle.js'] },
-      () => {
-        chrome.scripting.executeScript(
-          { target: { tabId: tabId }, files: ['./sidebar.bundle.js'] },
-          () => {}
-        );
-      }
+      { target: { tabId: tabId }, files: ['./injectScript.bundle.js'] }
+      // () => {
+      //   chrome.scripting.executeScript(
+      //     { target: { tabId: tabId }, files: ['./sidebar.bundle.js'] },
+      //     () => {}
+      //   );
+      // }
     );
   }
 });
