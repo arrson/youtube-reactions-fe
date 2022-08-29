@@ -6,7 +6,7 @@
   "background": {
     "service_worker": "background.bundle.js"
   },
-  "permissions": ["tabs", "scripting"],
+  "permissions": ["tabs", "webNavigation", "scripting"],
   "host_permissions": ["https://*.youtube.com/*"],
   "action": {
     "default_popup": "popup.html",
@@ -22,9 +22,7 @@
         "https://www.youtube-nocookie.com/embed/*"
       ],
       "all_frames": true,
-      "js": [
-        "contentScript.bundle.js"
-      ],
+      "js": ["contentScript.bundle.js"],
       "css": []
     }
   ],
@@ -32,6 +30,7 @@
     {
       "resources": [
         "sidebar.html",
+        "sidebar.bundle.js",
         "icon-128.png",
         "icon-34.png"
       ],

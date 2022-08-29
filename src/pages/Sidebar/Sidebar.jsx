@@ -27,7 +27,7 @@ const Sidebar = () => {
       <div className={styles.sidebarList}>
         {
           reactions.map(d => (
-            <a className={styles.video} href={d.url} target="_blank" title={d.title} key={d.id}>
+            <a className={styles.video} href={d.url} target="_self" title={d.title} key={d.id}>
               <img className={styles.videoThumbnail} src={d.thumbnail}/>
               <div className={styles.videoTitle}>{d.title}</div>
             </a>
