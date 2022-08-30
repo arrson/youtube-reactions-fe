@@ -10,10 +10,12 @@
   "scripts": {
     "build": "npm run clean-build && webpack --env production",
     "clean-build": "rimraf build/*",
-    "lint": "eslint ./src --fix",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
     "start": "npm run start-dev",
     "start-dev": "webpack serve",
-    "prettier": "prettier ./src --write"
+    "prettier": "prettier ./src",
+    "prettier:fix": "prettier ./src --write"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.2.6",

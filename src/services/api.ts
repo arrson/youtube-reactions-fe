@@ -1,5 +1,15 @@
 const BASE_URL = 'https://youtube-reaction-server.herokuapp.com';
 
+interface Video {
+  id: string;
+  title: string;
+  thumbnail: string;
+  publishedAt: string;
+  channelId: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
 const makeRequest = async (method: string, url: string, data?: object) => {
   const response = await fetch(`${BASE_URL}${url}`, {
     method: method,
@@ -11,8 +21,11 @@ const makeRequest = async (method: string, url: string, data?: object) => {
   return content;
 };
 
-export const getReactionVideos = (id: string) =>
+export const getReactionVideos = (id: string): Promise<Video[]> =>
   makeRequest('get', `/videos/${id}/videos`);
+
+export const getVideosInfo = (id: string): Promise<Video[]> =>
+  makeRequest('get', `/videos?id=${id}`);
 
 export const createReaction = (videoId: string, reactionId: string) =>
   makeRequest('post', `/reactions`, { videoId, reactionId });

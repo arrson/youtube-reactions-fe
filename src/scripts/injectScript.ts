@@ -24,8 +24,13 @@ const waitForElm = (selector: string): Promise<Element | null> => {
 
   const loadSidebar = async () => {
     if (document.getElementById(SIDEBAR_ID) !== null) {
+      // send a custom event to the react componet to update
+      const message = {};
+      const event = new CustomEvent('YT_VIDEO_ID', { detail: message });
+      window.dispatchEvent(event);
       return;
     }
+
     const container = document.createElement('div');
     container.id = SIDEBAR_ID;
 
