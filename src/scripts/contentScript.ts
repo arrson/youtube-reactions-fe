@@ -11,21 +11,21 @@
 //   }
 // });
 
-const ELEMENT_ID = 'youtubeReactionVideos';
-const showMenu = () => {
-  if (document.getElementById(ELEMENT_ID) !== null) {
-    return;
-  }
+// const ELEMENT_ID = 'youtubeReactionVideos';
+// const showMenu = () => {
+//   if (document.getElementById(ELEMENT_ID) !== null) {
+//     return;
+//   }
 
-  var iframe = document.createElement('iframe');
-  iframe.id = ELEMENT_ID;
-  // Must be declared at web_accessible_resources in manifest.json
-  iframe.src = chrome.runtime.getURL('sidebar.html');
-  iframe.style.cssText = 'width:100%;height:300px;';
+//   const iframe = document.createElement('iframe');
+//   iframe.id = ELEMENT_ID;
+//   // Must be declared at web_accessible_resources in manifest.json
+//   iframe.src = chrome.runtime.getURL('sidebar.html');
+//   iframe.style.cssText = 'width:100%;height:300px;';
 
-  // load in youtube sidebar
-  const parentNode = document.querySelector(
-    '#secondary > #secondary-inner > #related'
-  );
-  parentNode?.prepend(iframe);
-};
+//   // load in youtube sidebar
+//   const parentNode = document.querySelector(
+//     '#secondary > #secondary-inner > #related'
+//   );
+//   parentNode?.prepend(iframe);
+// };
