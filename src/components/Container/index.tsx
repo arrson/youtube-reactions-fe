@@ -1,16 +1,13 @@
 import React from 'react';
 import { Box, BoxProps, useStyleConfig } from '@chakra-ui/react';
 
-enum Variant {
-  content = 'content',
-}
 export interface ContainerProps extends BoxProps {
-  variant: Variant;
+  variant: null | 'gray';
 }
 
 const CustomBox = (props: ContainerProps) => {
-  const styles = useStyleConfig('CustomBox', {});
-  return <Box mx="0" px="0" {...props} __css={styles}></Box>;
+  const css = useStyleConfig('CustomBox', {});
+  return <Box {...props} __css={css}></Box>;
 };
 
 export default CustomBox;
