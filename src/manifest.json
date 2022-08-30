@@ -17,10 +17,7 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://*.youtube.com/*",
-        "https://www.youtube-nocookie.com/embed/*"
-      ],
+      "matches": ["https://*.youtube.com/*"],
       "all_frames": true,
       "js": ["contentScript.bundle.js"],
       "css": []
@@ -34,7 +31,7 @@
         "icon-128.png",
         "icon-34.png"
       ],
-      "matches": ["<all_urls>"]
+      "matches": ["https://*.youtube.com/*"]
     }
   ]
 }

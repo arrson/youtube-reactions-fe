@@ -4,7 +4,7 @@ const waitForElm = (selector: string): Promise<Element | null> => {
       return resolve(document.querySelector(selector));
     }
 
-    const observer = new MutationObserver((mutations) => {
+    const observer = new MutationObserver(() => {
       if (document.querySelector(selector)) {
         resolve(document.querySelector(selector));
         observer.disconnect();
@@ -36,6 +36,7 @@ const waitForElm = (selector: string): Promise<Element | null> => {
     const parentNode = await waitForElm(
       '#secondary > #secondary-inner > #related'
     );
+
     parentNode?.prepend(container);
   };
 
