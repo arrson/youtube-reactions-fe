@@ -4,18 +4,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
+const ROOT = path.resolve(__dirname);
+
 module.exports = (env) => {
   const isDevelopment = !env.production;
 
   const options = {
     mode: isDevelopment ? 'development' : 'production',
     entry: {
-      options: path.join(__dirname, 'src', 'pages', 'Options', 'index.jsx'),
-      popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.jsx'),
-      sidebar: path.join(__dirname, 'src', 'pages', 'Sidebar', 'index.jsx'),
-      background: path.join(__dirname, 'src', 'scripts', 'background.ts'),
-      contentScript: path.join(__dirname, 'src', 'scripts', 'contentScript.ts'),
-      injectScript: path.join(__dirname, 'src', 'scripts', 'injectScript.ts'),
+      background: [ROOT + '/src/scripts/background'],
+      contentScript: [ROOT + '/src/scripts/contentScript'],
+      options: [ROOT + '/src/pages/Options/index'],
+      popup: [ROOT + '/src/pages/Popup/index'],
     },
     output: {
       filename: '[name].bundle.js',
@@ -63,7 +63,7 @@ module.exports = (env) => {
             from: 'src/manifest.json',
             to: path.join(__dirname, 'build'),
             force: true,
-            transform: function (content, path) {
+            transform: function (content) {
               // generates the manifest file using the package.json informations
               return Buffer.from(
                 JSON.stringify({
@@ -96,12 +96,6 @@ module.exports = (env) => {
         template: path.join(__dirname, 'src', 'pages', 'Popup', 'index.html'),
         filename: 'popup.html',
         chunks: ['popup'],
-        cache: false,
-      }),
-      new HtmlWebpackPlugin({
-        template: path.join(__dirname, 'src', 'pages', 'Sidebar', 'index.html'),
-        filename: 'sidebar.html',
-        chunks: ['sidebar'],
         cache: false,
       }),
     ].filter(Boolean),

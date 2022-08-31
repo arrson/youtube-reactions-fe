@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 import { FormValue } from './types';
 import Page1 from './pages/Page1';

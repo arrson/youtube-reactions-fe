@@ -10,8 +10,9 @@ const colors = {
 
 const youtubeContainer = document.getElementById('contentContainer') as Element;
 const initialColorMode =
+  youtubeContainer &&
   window.getComputedStyle(youtubeContainer).backgroundColor ===
-  'rgb(249, 249, 249)'
+    'rgb(249, 249, 249)'
     ? 'light'
     : 'dark';
 
