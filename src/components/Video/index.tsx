@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Image, Text } from '@chakra-ui/react';
 import Container from '../Container';
 
@@ -6,7 +5,7 @@ interface VideoProps {
   title: string;
   image: string;
   subtitle?: string;
-  variant: null | 'gray';
+  variant?: null | 'gray';
 }
 
 const Video = ({ title, image, subtitle, variant }: VideoProps) => (

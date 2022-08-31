@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Text,
   LinkBox,
@@ -19,8 +19,15 @@ import AddReactionModal from 'components/AddReactionModal';
 
 import styles from './styles.module.scss';
 
+export interface IVideo {
+  id: string;
+  url: string;
+  title: string;
+  image: string;
+}
+
 const Sidebar = () => {
-  const [reactions, setReactions] = useState(false);
+  const [reactions, setReactions] = useState<IVideo[] | null>(null);
   const { isOpen, onToggle } = useDisclosure();
 
   const updateVideos = async () => {
@@ -31,7 +38,7 @@ const Sidebar = () => {
         id: d.id,
         url: `https://www.youtube.com/watch?v=${d.id}`,
         title: d.title,
-        thumbnail: d.thumbnail,
+        image: d.thumbnail,
       }))
     );
   };
@@ -39,7 +46,6 @@ const Sidebar = () => {
   useEffect(() => {
     updateVideos();
     window.addEventListener('YT_VIDEO_ID', updateVideos, false);
-
     return () => {
       window.removeEventListener('YT_VIDEO_ID', updateVideos, false);
     };
@@ -63,7 +69,7 @@ const Sidebar = () => {
       {reactions.map((d) => (
         <LinkBox py="1" key={d.id}>
           <LinkOverlay className={styles.video} href={d.url} isExternal={false}>
-            <Video image={d.thumbnail} title={d.title} />
+            <Video image={d.image} title={d.title} />
           </LinkOverlay>
         </LinkBox>
       ))}
