@@ -28,6 +28,7 @@ const components = {
   Button: {
     baseStyle: {
       borderColor: 'transparent',
+      cursor: 'pointer',
     },
     variants: {
       ghost: {
@@ -50,6 +51,13 @@ const components = {
       dialog: {
         bg: colors.background(props),
       },
+    }),
+  },
+  Tooltip: {
+    baseStyle: (props: StyleFunctionProps) => ({
+      fontSize: '12px',
+      bg: colors.contentBackground(props),
+      color: colors.color(props),
     }),
   },
   Input: {
