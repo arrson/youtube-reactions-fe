@@ -10,6 +10,12 @@ interface Video {
   createdAt: string;
 }
 
+export interface VideoReactions {
+  reactions: Video[];
+  reactionTo: Video[];
+  otherReactions: Video[];
+}
+
 const makeRequest = async (method: string, url: string, data?: object) => {
   const response = await fetch(`${BASE_URL}${url}`, {
     method: method,
@@ -21,7 +27,7 @@ const makeRequest = async (method: string, url: string, data?: object) => {
   return content;
 };
 
-export const getReactionVideos = (id: string): Promise<Video[]> =>
+export const getReactionVideos = (id: string): Promise<VideoReactions> =>
   makeRequest('get', `/videos/${id}/videos`);
 
 export const getVideosInfo = (id: string): Promise<Video[]> =>
