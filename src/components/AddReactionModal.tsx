@@ -11,7 +11,7 @@ import AddReactionForm from './AddReactionForm';
 interface ModalProps {
   isOpen: boolean;
   onToggle: () => void;
-  onSubmit?: () => void;
+  onSubmit: () => void;
 }
 
 const AddReactionModal = ({ isOpen, onToggle, onSubmit }: ModalProps) => {

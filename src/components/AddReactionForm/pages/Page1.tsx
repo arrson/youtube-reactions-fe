@@ -9,25 +9,12 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react';
 
-import { getVideosInfo } from 'services/api';
+import { useAuth } from 'services/authContext';
 import { getYoutubeId } from 'services/utils';
 import { PageProps } from '../types';
 
-const getVideoInfo = async ({
-  original,
-  reaction,
-}: {
-  original: string;
-  reaction: string;
-}) => {
-  const videos = await getVideosInfo([original, reaction].join(','));
-  return {
-    original: videos.find((d) => d.id === original),
-    reaction: videos.find((d) => d.id === reaction),
-  };
-};
-
 const Page = ({ formValue, onSubmit }: PageProps) => {
+  const { api } = useAuth();
   const [url, setUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -37,6 +24,7 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
 
     const original = getYoutubeId(window.location.href);
     const reaction = getYoutubeId(url);
+    if (!original) return;
     if (!reaction) {
       setError('Invalid YouTube Url');
       setIsLoading(false);
@@ -44,9 +32,16 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
     }
 
     try {
-      const videos = await getVideoInfo({ original, reaction });
+      const { data: videos } = await api.getVideosInfo(
+        [original, reaction].join(',')
+      );
       setIsLoading(false);
-      onSubmit({ ...formValue, ...videos, url });
+      onSubmit({
+        ...formValue,
+        original: videos.find((d) => d.id === original),
+        reaction: videos.find((d) => d.id === reaction),
+        url,
+      });
     } catch (e) {
       setError('Invalid YouTube Url');
       setIsLoading(false);
