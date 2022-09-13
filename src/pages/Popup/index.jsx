@@ -1,8 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import Popup from './Popup';
-import './index.css';
 
-createRoot(document.getElementById('app-container')).render(<Popup />);
+createRoot(document.getElementById('app-container')).render(
+  <React.StrictMode>
+    <div></div>
+  </React.StrictMode>
+);
 
 if (module.hot) module.hot.accept();

@@ -34,6 +34,9 @@ const components = {
       ghost: {
         bg: 'transparent',
       },
+      outline: {
+        bg: 'transparent',
+      },
     },
   },
   CloseButton: {

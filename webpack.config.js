@@ -3,6 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const ROOT = path.resolve(__dirname);
 
@@ -54,9 +55,13 @@ module.exports = (env) => {
     resolve: {
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'],
+      alias: {
+        process: 'process/browser',
+      },
     },
     plugins: [
       isDevelopment && new ReactRefreshPlugin(),
+      new Dotenv(),
       new CopyWebpackPlugin({
         patterns: [
           {

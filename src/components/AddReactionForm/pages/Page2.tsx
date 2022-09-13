@@ -23,12 +23,14 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
   return (
     <>
       <ModalBody>
-        <Video
-          title={videos.reaction.title}
-          image={videos.reaction.thumbnail}
-          subtitle="Reaction Video"
-          variant="gray"
-        />
+        {!!videos.reaction && (
+          <Video
+            title={videos.reaction.title}
+            image={videos.reaction.thumbnail}
+            subtitle="Reaction Video"
+            variant="gray"
+          />
+        )}
         <Flex mt={2} mb={2} alignItems="center">
           <IconButton
             aria-label="switch"
@@ -45,12 +47,14 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
           />
           <Text>is a reaction to</Text>
         </Flex>
-        <Video
-          title={videos.original.title}
-          image={videos.original.thumbnail}
-          subtitle="Original Video"
-          variant="gray"
-        />
+        {!!videos.original && (
+          <Video
+            title={videos.original.title}
+            image={videos.original.thumbnail}
+            subtitle="Original Video"
+            variant="gray"
+          />
+        )}
       </ModalBody>
       <ModalFooter>
         <Button

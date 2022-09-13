@@ -1,3 +1,11 @@
+export const MESSAGES = {
+  videoId: 'ytvideoId',
+  token: 'token',
+};
+export const STORAGE = {
+  token: 'token',
+};
+
 // Return video id or false
 const regExp =
   /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/; // eslint-disable-line

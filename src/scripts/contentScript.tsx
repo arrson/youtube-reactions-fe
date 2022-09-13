@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-
-import ChakraWrapper from 'components/ChakraWrapper';
-import Sidebar from 'components/Sidebar';
+import Sidebar from 'scenes/Sidebar';
+import { MESSAGES } from 'services/utils';
 
 (() => {
   const waitForElm = (selector: string): Promise<Element | null> => {
@@ -36,9 +35,7 @@ import Sidebar from 'components/Sidebar';
     parentNode?.prepend(container);
     createRoot(container).render(
       <React.StrictMode>
-        <ChakraWrapper>
-          <Sidebar />
-        </ChakraWrapper>
+        <Sidebar />
       </React.StrictMode>
     );
   };
@@ -46,7 +43,7 @@ import Sidebar from 'components/Sidebar';
   window.addEventListener('load', () => {
     let isLoaded = false;
     chrome.runtime.onMessage.addListener((request) => {
-      if (request.message === 'ytvideoid') {
+      if (request.message === MESSAGES.videoId) {
         if (!isLoaded) {
           loadSidebar();
           isLoaded = true;
@@ -55,6 +52,8 @@ import Sidebar from 'components/Sidebar';
         const event = new CustomEvent('YT_VIDEO_ID', { detail: {} });
         window.dispatchEvent(event);
       }
+
+      return true;
     });
   });
 })();

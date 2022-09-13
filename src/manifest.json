@@ -1,15 +1,15 @@
 {
   "manifest_version": 3,
   "name": "Youtube Reactions",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqFDdkRpaOGQkz+i0wr3Hy7Z7FA+DsZigmZWctudtckj+nYg+9OJT/L4D27KyHZJDxPbmcgmWHaLFIngmoGqxP0gVq9KDrHfH76ST505lklQWCRzw90bsWntpeIfVYp95wP2ScyzFM+pvRHzpnyQMEEYlHyWwBpPXUn2ZUQYj7oEsh7MhK4r0UVXoeceS0pU6kASxhIpWVXZXaVpXDNPAhnsmMAKvzo4oJ+QaNZgzGV36ifTn/nA3AvVCu9pOdrPkQYT274I6m3RSEMialinetNaSoL5pA/QhiiTKvmqCsJVln/C3R+GDN+BrWxuhvB4s/XO8xXb2uc8z/1B65lbgUQIDAQAB",
   "description": "",
   "options_page": "options.html",
   "background": {
     "service_worker": "background.bundle.js"
   },
-  "permissions": ["tabs", "webNavigation", "scripting"],
+  "permissions": ["tabs", "webNavigation", "scripting", "storage"],
   "host_permissions": ["https://*.youtube.com/*"],
   "action": {
-    "default_popup": "popup.html",
     "default_icon": "icon-48.png"
   },
   "icons": {

@@ -13,11 +13,12 @@ import {
 import { TbPlus } from 'react-icons/tb';
 
 import { getYoutubeId } from 'services/utils';
-import { getReactionVideos, VideoReactions } from 'services/api';
+import { VideoReactions } from 'services/api';
+import { useAuth } from 'services/authContext';
 
 import Container from 'components/Container';
 import Video from 'components/Video';
-import AddReactionModal from 'components/AddReactionModal';
+import AddReactionModal from '../AddReactionModal';
 
 import styles from './styles.module.scss';
 
@@ -67,9 +68,18 @@ const VideoLink = ({
   </LinkBox>
 );
 
-const Sidebar = () => {
+const Sidebar = ({ toggleLoginPanel }: { toggleLoginPanel: () => void }) => {
+  const { api, user } = useAuth();
   const [videos, setVideos] = useState<VideoReactions | null>(null);
   const { isOpen, onToggle } = useDisclosure();
+
+  const showCreateReactionModal = () => {
+    // show login panel if user is not logged in
+    if (!user) {
+      toggleLoginPanel();
+    }
+    onToggle();
+  };
 
   const updateVideos = async () => {
     const id = getYoutubeId(window.location.href);
@@ -78,7 +88,7 @@ const Sidebar = () => {
       return;
     }
 
-    const videos = await getReactionVideos(id);
+    const { data: videos } = await api.getReactionVideos(id);
     setVideos(videos);
   };
 
@@ -99,7 +109,7 @@ const Sidebar = () => {
       <Box key="reactions" mb="2">
         <Title
           title="Reactions"
-          onToggle={onToggle}
+          onToggle={showCreateReactionModal}
           showAddReaction={!sections.length}
         />
         {videos.reactions.map((d) => (
@@ -114,7 +124,7 @@ const Sidebar = () => {
       <Box key="reactionTo" mb="2">
         <Title
           title="Reaction To"
-          onToggle={onToggle}
+          onToggle={showCreateReactionModal}
           showAddReaction={!sections.length}
         />
         {videos.reactionTo.map((d) => (
@@ -129,7 +139,7 @@ const Sidebar = () => {
       <Box key="otherReactions" mb="2">
         <Title
           title="Other Reactions"
-          onToggle={onToggle}
+          onToggle={showCreateReactionModal}
           showAddReaction={!sections.length}
         />
         {videos.otherReactions.map((d) => (
@@ -142,7 +152,7 @@ const Sidebar = () => {
   const content = sections.length ? (
     sections
   ) : (
-    <Button leftIcon={<TbPlus />} onClick={onToggle}>
+    <Button leftIcon={<TbPlus />} onClick={showCreateReactionModal}>
       Add Reaction
     </Button>
   );
@@ -150,7 +160,7 @@ const Sidebar = () => {
   return (
     <Container>
       <AddReactionModal
-        isOpen={isOpen}
+        isOpen={!!user && isOpen}
         onToggle={onToggle}
         onSubmit={() => {
           updateVideos();

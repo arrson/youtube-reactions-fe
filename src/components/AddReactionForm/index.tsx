@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import { useAuth } from 'services/authContext';
+
 import { FormValue } from './types';
 import Page1 from './pages/Page1';
 import Page2 from './pages/Page2';
-
-import { createReaction } from 'services/api';
 
 const pages = [Page1, Page2];
 
@@ -12,12 +12,16 @@ interface FormProps {
 }
 
 const AddReactionForm = ({ onSubmit }: FormProps) => {
+  const { api } = useAuth();
   const [formValue, setFormValue] = useState({});
   const [page, setPage] = useState(0);
 
   const handleSubmit = async (val: FormValue) => {
-    const res = await createReaction(val.original.id, val.reaction.id);
-    onSubmit(res);
+    if (!val.original || !val.reaction) {
+      return;
+    }
+    const res = await api.createReaction(val.original.id, val.reaction.id);
+    onSubmit(res.data);
   };
 
   const Page = pages[page];
