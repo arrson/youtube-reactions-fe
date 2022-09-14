@@ -16,7 +16,6 @@ module.exports = (env) => {
       background: [ROOT + '/src/scripts/background'],
       contentScript: [ROOT + '/src/scripts/contentScript'],
       options: [ROOT + '/src/pages/Options/index'],
-      popup: [ROOT + '/src/pages/Popup/index'],
     },
     output: {
       filename: '[name].bundle.js',
@@ -95,12 +94,6 @@ module.exports = (env) => {
         template: path.join(__dirname, 'src', 'pages', 'Options', 'index.html'),
         filename: 'options.html',
         chunks: ['options'],
-        cache: false,
-      }),
-      new HtmlWebpackPlugin({
-        template: path.join(__dirname, 'src', 'pages', 'Popup', 'index.html'),
-        filename: 'popup.html',
-        chunks: ['popup'],
         cache: false,
       }),
     ].filter(Boolean),
