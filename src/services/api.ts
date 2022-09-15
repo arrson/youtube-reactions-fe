@@ -1,5 +1,4 @@
-const BASE_URL =
-  process.env.API_URL || 'https://youtube-reaction-server.herokuapp.com';
+const BASE_URL = process.env.API_URL || 'https://yt-reactions-server.fly.dev';
 
 interface Video {
   id: string;
