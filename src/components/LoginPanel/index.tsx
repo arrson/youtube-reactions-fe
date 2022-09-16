@@ -1,17 +1,6 @@
-import {
-  Button,
-  IconButton,
-  Center,
-  Text,
-  Portal,
-  Flex,
-} from '@chakra-ui/react';
+import { Button, Center, Text, Flex } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
-import { FaTimes } from 'react-icons/fa';
 import { useAuth } from 'services/authContext';
-import Container from '../Container';
-
-import styles from './styles.module.scss';
 
 const LoginButton = ({ onClick }: { onClick: () => void }) => (
   <Button
@@ -46,34 +35,48 @@ const UserInfo = ({
   </Flex>
 );
 
-const LoginPanel = ({ onClose }: { onClose: () => void }) => {
+const LoginPanel = () => {
   const { user, login, logout } = useAuth();
 
   return (
-    <Portal>
-      <Container className={styles.panel} variant="gray">
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text px={2}>Youtube Reactions</Text>
-          <IconButton
-            variant="ghost"
-            aria-label="close"
-            icon={<FaTimes />}
-            onClick={onClose}
-          />
-        </Flex>
-        <Flex alignItems="center" flexDirection="column" p={4}>
-          {user ? (
-            <>
-              <UserInfo displayName={user.displayName} email={user.email} />
-              <LogoutButton onClick={logout} />
-            </>
-          ) : (
-            <LoginButton onClick={login} />
-          )}
-        </Flex>
-      </Container>
-    </Portal>
+    <Flex alignItems="center" flexDirection="column" p={4}>
+      {user ? (
+        <>
+          <UserInfo displayName={user.displayName} email={user.email} />
+          <LogoutButton onClick={logout} />
+        </>
+      ) : (
+        <LoginButton onClick={login} />
+      )}
+    </Flex>
   );
+
+  //{ onClose }: { onClose: () => void }
+  // return (
+  //   <Portal>
+  //     <Container className={styles.panel} variant="gray">
+  //       <Flex justifyContent="space-between" alignItems="center">
+  //         <Text px={2}>Youtube Reactions</Text>
+  //         <IconButton
+  //           variant="ghost"
+  //           aria-label="close"
+  //           icon={<FaTimes />}
+  //           onClick={onClose}
+  //         />
+  //       </Flex>
+  //       <Flex alignItems="center" flexDirection="column" p={4}>
+  //         {user ? (
+  //           <>
+  //             <UserInfo displayName={user.displayName} email={user.email} />
+  //             <LogoutButton onClick={logout} />
+  //           </>
+  //         ) : (
+  //           <LoginButton onClick={login} />
+  //         )}
+  //       </Flex>
+  //     </Container>
+  //   </Portal>
+  // );
 };
 
 export default LoginPanel;

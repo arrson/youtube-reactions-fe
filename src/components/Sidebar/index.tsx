@@ -3,7 +3,6 @@ import {
   Text,
   LinkBox,
   LinkOverlay,
-  useDisclosure,
   Button,
   IconButton,
   Flex,
@@ -15,12 +14,10 @@ import { TbPlus } from 'react-icons/tb';
 import { getYoutubeId } from 'services/utils';
 import { VideoReactions } from 'services/api';
 import { useAuth } from 'services/authContext';
+import { subscribe, unsubscribe, EVENTS } from 'services/events';
 
 import Container from 'components/Container';
 import Video from 'components/Video';
-import AddReactionModal from '../AddReactionModal';
-
-import styles from './styles.module.scss';
 
 const getUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
@@ -62,25 +59,23 @@ const VideoLink = ({
   title: string;
 }) => (
   <LinkBox py="1">
-    <LinkOverlay className={styles.video} href={getUrl(id)} isExternal={false}>
+    <LinkOverlay
+      style={{
+        display: 'block',
+        color: 'inherit',
+        textDecoration: 'none',
+      }}
+      href={getUrl(id)}
+      isExternal={false}
+    >
       <Video image={thumbnail} title={title} />
     </LinkOverlay>
   </LinkBox>
 );
 
-const Sidebar = ({ toggleLoginPanel }: { toggleLoginPanel: () => void }) => {
-  const { api, user } = useAuth();
+const Sidebar = ({ onCreate }: { onCreate: () => void }) => {
+  const { api } = useAuth();
   const [videos, setVideos] = useState<VideoReactions | null>(null);
-  const { isOpen, onToggle } = useDisclosure();
-
-  const showCreateReactionModal = () => {
-    // show login panel if user is not logged in
-    if (!user) {
-      toggleLoginPanel();
-    }
-    onToggle();
-  };
-
   const updateVideos = async () => {
     const id = getYoutubeId(window.location.href);
     if (!id) {
@@ -88,15 +83,22 @@ const Sidebar = ({ toggleLoginPanel }: { toggleLoginPanel: () => void }) => {
       return;
     }
 
-    const { data: videos } = await api.getReactionVideos(id);
-    setVideos(videos);
+    const { data, state } = await api.getReactionVideos(id);
+    if (state === 'success') {
+      setVideos(data);
+    } else {
+      setVideos([]);
+      console.error(data.message);
+    }
   };
 
   useEffect(() => {
     updateVideos();
-    window.addEventListener('YT_VIDEO_ID', updateVideos, false);
+    subscribe(EVENTS.ytvideoId, updateVideos);
+    subscribe(EVENTS.reactionCreated, updateVideos);
     return () => {
-      window.removeEventListener('YT_VIDEO_ID', updateVideos, false);
+      unsubscribe(EVENTS.ytvideoId, updateVideos);
+      unsubscribe(EVENTS.reactionCreated, updateVideos);
     };
   }, []);
 
@@ -109,7 +111,7 @@ const Sidebar = ({ toggleLoginPanel }: { toggleLoginPanel: () => void }) => {
       <Box key="reactions" mb="2">
         <Title
           title="Reactions"
-          onToggle={showCreateReactionModal}
+          onToggle={onCreate}
           showAddReaction={!sections.length}
         />
         {videos.reactions.map((d) => (
@@ -124,7 +126,7 @@ const Sidebar = ({ toggleLoginPanel }: { toggleLoginPanel: () => void }) => {
       <Box key="reactionTo" mb="2">
         <Title
           title="Reaction To"
-          onToggle={showCreateReactionModal}
+          onToggle={onCreate}
           showAddReaction={!sections.length}
         />
         {videos.reactionTo.map((d) => (
@@ -139,7 +141,7 @@ const Sidebar = ({ toggleLoginPanel }: { toggleLoginPanel: () => void }) => {
       <Box key="otherReactions" mb="2">
         <Title
           title="Other Reactions"
-          onToggle={showCreateReactionModal}
+          onToggle={onCreate}
           showAddReaction={!sections.length}
         />
         {videos.otherReactions.map((d) => (
@@ -152,24 +154,12 @@ const Sidebar = ({ toggleLoginPanel }: { toggleLoginPanel: () => void }) => {
   const content = sections.length ? (
     sections
   ) : (
-    <Button leftIcon={<TbPlus />} onClick={showCreateReactionModal}>
+    <Button leftIcon={<TbPlus />} onClick={onCreate}>
       Add Reaction
     </Button>
   );
 
-  return (
-    <Container>
-      <AddReactionModal
-        isOpen={!!user && isOpen}
-        onToggle={onToggle}
-        onSubmit={() => {
-          updateVideos();
-          onToggle();
-        }}
-      />
-      {content}
-    </Container>
-  );
+  return <Container>{content}</Container>;
 };
 
 export default Sidebar;

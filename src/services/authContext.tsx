@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { getBaseUrl, getApi, User } from 'services/api';
 import { STORAGE, MESSAGES } from 'services/utils';
+import { publish, EVENTS } from './events';
 
 interface AuthContextInterface {
   user: User | undefined;
@@ -68,6 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     setApi(newApi);
     setUser(userInfo);
+    publish(EVENTS.userUpdated, { user: userInfo });
   };
 
   const updateUser = async () => {

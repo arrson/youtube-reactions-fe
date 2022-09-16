@@ -1,13 +1,5 @@
 import { useState } from 'react';
-import {
-  Icon,
-  Text,
-  Button,
-  IconButton,
-  Flex,
-  ModalBody,
-  ModalFooter,
-} from '@chakra-ui/react';
+import { Icon, Text, Button, IconButton, Flex } from '@chakra-ui/react';
 
 import { TbArrowsUpDown } from 'react-icons/tb';
 import Video from 'components/Video';
@@ -22,7 +14,7 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
 
   return (
     <>
-      <ModalBody>
+      <div>
         {!!videos.reaction && (
           <Video
             title={videos.reaction.title}
@@ -55,8 +47,8 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
             variant="gray"
           />
         )}
-      </ModalBody>
-      <ModalFooter>
+      </div>
+      <div>
         <Button
           colorScheme="blue"
           onClick={() => {
@@ -65,7 +57,7 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
         >
           Submit
         </Button>
-      </ModalFooter>
+      </div>
     </>
   );
 };

@@ -8,7 +8,7 @@ import Page2 from './pages/Page2';
 const pages = [Page1, Page2];
 
 interface FormProps {
-  onSubmit: (formValue: FormValue) => void;
+  onSubmit?: (formValue: FormValue) => void;
 }
 
 const AddReactionForm = ({ onSubmit }: FormProps) => {
@@ -21,7 +21,9 @@ const AddReactionForm = ({ onSubmit }: FormProps) => {
       return;
     }
     const res = await api.createReaction(val.original.id, val.reaction.id);
-    onSubmit(res.data);
+    if (onSubmit) {
+      onSubmit(res.data);
+    }
   };
 
   const Page = pages[page];

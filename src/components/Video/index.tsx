@@ -24,9 +24,9 @@ const Video = ({ title, image, subtitle, variant }: VideoProps) => (
         alt={title}
         mr="4"
       />
-      <Text fontSize="md" py="2" fontWeight="semibold">
+      <Box fontSize="sm" py="2" fontWeight="semibold">
         {title}
-      </Text>
+      </Box>
     </Box>
   </Container>
 );
