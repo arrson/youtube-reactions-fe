@@ -17,6 +17,8 @@ const PANEL = {
 const SidebarWrapper = () => {
   const { api, user } = useAuth();
   const [videos, setVideos] = useState<VideoReactions | null>(null);
+  const [showFormOnUserLogin, setShowFormOnUserLogin] =
+    useState<boolean>(false);
   const [activePanel, setActivePanel] = useState<string | null>(null);
   const togglePanel = (panel: string) => () => {
     setActivePanel(activePanel === panel ? null : panel);
@@ -45,6 +47,14 @@ const SidebarWrapper = () => {
     };
   }, []);
 
+  // assume the user is logging in to create a reaction
+  useEffect(() => {
+    if (showFormOnUserLogin && user) {
+      setActivePanel(PANEL.create);
+      setShowFormOnUserLogin(false);
+    }
+  }, [user, showFormOnUserLogin]);
+
   return (
     <>
       <LoginPanel
@@ -64,6 +74,9 @@ const SidebarWrapper = () => {
           videos={videos}
           onCreate={() => {
             // show login panel if user is not logged in
+            if (!user) {
+              setShowFormOnUserLogin(true);
+            }
             setActivePanel(user ? PANEL.create : PANEL.login);
           }}
         />
