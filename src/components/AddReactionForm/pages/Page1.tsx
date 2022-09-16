@@ -2,8 +2,7 @@ import { useState } from 'react';
 import {
   Button,
   Input,
-  ModalBody,
-  ModalFooter,
+  Box,
   FormControl,
   FormLabel,
   FormErrorMessage,
@@ -50,7 +49,7 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
 
   return (
     <>
-      <ModalBody>
+      <Box py={2}>
         <FormControl isInvalid={!!error}>
           <FormLabel>Related Video</FormLabel>
           <Input
@@ -60,8 +59,8 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
           />
           {!!error && <FormErrorMessage>{error}</FormErrorMessage>}
         </FormControl>
-      </ModalBody>
-      <ModalFooter>
+      </Box>
+      <Box py={2}>
         <Button
           isDisabled={!url}
           isLoading={isLoading}
@@ -70,7 +69,7 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
         >
           Add Reaction
         </Button>
-      </ModalFooter>
+      </Box>
     </>
   );
 };
