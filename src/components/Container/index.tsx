@@ -1,11 +1,11 @@
 import { Box, BoxProps, useStyleConfig } from '@chakra-ui/react';
 
 export interface ContainerProps extends BoxProps {
-  variant?: null | 'gray';
+  variant?: undefined | 'gray';
 }
 
 const CustomBox = (props: ContainerProps) => {
-  const css = useStyleConfig('CustomBox', {});
+  const css = useStyleConfig('CustomBox', props);
   return <Box {...props} __css={css}></Box>;
 };
 
