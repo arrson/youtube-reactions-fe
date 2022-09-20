@@ -10,6 +10,12 @@ interface Video {
   createdAt: string;
 }
 
+export interface ChannelSearchResult {
+  channelId: string;
+  channelName: string;
+  imgUrl: string;
+}
+
 export interface VideoReactions {
   reactions: Video[];
   reactionTo: Video[];
@@ -44,6 +50,10 @@ interface GetVideos extends BaseSuccess {
 }
 interface GetUserProfile extends BaseSuccess {
   data: User;
+}
+
+interface GetChannelSearch extends BaseSuccess {
+  data: ChannelSearchResult[];
 }
 
 export const getBaseUrl = () => BASE_URL;
@@ -88,5 +98,7 @@ export const getApi = (token?: string) => {
       makeRequest('post', `/reactions/${reactionId}/report`),
     getUserProfile: (): Promise<GetUserProfile | Error> =>
       makeRequest('get', `/users/profile`),
+    searchChannelName: (name: string): Promise<GetChannelSearch | Error> =>
+      makeRequest('get', `/search/?name=${name}`),
   };
 };

@@ -1,38 +1,37 @@
 import { SearchIcon } from '@chakra-ui/icons';
 import {
-  useDisclosure,
+  Center,
   Input,
   InputGroup,
+  InputLeftElement,
   Popover,
   PopoverAnchor,
   PopoverContent,
-  InputLeftElement,
   Spinner,
-  Center,
-  Divider,
+  useDisclosure,
 } from '@chakra-ui/react';
+import { ChannelSearchResult } from 'services/api';
 import { useAuth } from 'services/authContext';
-import React, { useEffect, useState } from 'react';
-import SearchOption from './SearchOption';
-// import youtube from 'services/youtube';
+import { useEffect, useRef, useState } from 'react';
+import SearchResultList from './SearchResultList';
 
 const ReactorSearch = () => {
   const { api } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [debouncedTerm, setDebouncedTerm] = useState(searchTerm);
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState<ChannelSearchResult[]>([]);
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const initialFocusRef = React.useRef();
+  const initialFocusRef = useRef();
 
-  const onSearchSubmit = async (searchTerm) => {
+  const onSearchSubmit = async (searchTerm: string) => {
     setLoading(true);
     try {
-      const data = await api.searchChannelName(searchTerm);
-      console.log('setting');
-      setSearchResults(data);
+      const res = await api.searchChannelName(searchTerm);
+      setSearchResults(res.data);
     } catch (e) {
       console.log('error searching');
+      console.log(e);
     }
     setLoading(false);
   };
@@ -49,20 +48,6 @@ const ReactorSearch = () => {
       setSearchResults([]);
     }
   }, [searchTerm]);
-
-  let searchDomContent = '';
-  if (searchResults.length > 0) {
-    searchDomContent = searchResults.map((result) => (
-      <>
-        <SearchOption
-          key={result.channelId}
-          thumbnail={result.thumbnail}
-          name={result.name}
-        />
-        <Divider />
-      </>
-    ));
-  }
 
   return (
     <>
@@ -90,7 +75,7 @@ const ReactorSearch = () => {
           </InputGroup>
         </PopoverAnchor>
         <PopoverContent fontSize="xl">
-          {!loading && searchDomContent}
+          {!loading && <SearchResultList results={searchResults} />}
           {loading && (
             <Center>
               <Spinner

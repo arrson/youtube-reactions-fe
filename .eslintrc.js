@@ -13,13 +13,19 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'prettier'],
   settings: {
     react: {
       version: 'detect',
     },
   },
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
     '@typescript-eslint/no-var-requires': 0,
   },
 };
