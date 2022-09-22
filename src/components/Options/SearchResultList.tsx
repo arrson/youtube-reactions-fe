@@ -1,20 +1,24 @@
 import { Divider } from '@chakra-ui/react';
-import { ChannelSearchResult } from 'services/api';
+import { Channel } from 'services/api';
 import SearchOption from './SearchOption';
 
 interface Props {
-  results: ChannelSearchResult[];
+  results: Channel[];
+  onClick: (c: Channel) => void;
 }
 
-const SearchResultList = ({ results }: Props) => {
+const SearchResultList = ({ results, onClick }: Props) => {
   return (
     <>
       {results.map((result) => (
         <>
           <SearchOption
-            key={result.channelId}
-            thumbnail={result.imgUrl}
-            name={result.channelName}
+            key={result.id}
+            thumbnail={result.img}
+            name={result.name}
+            onClick={() => {
+              onClick(result);
+            }}
           />
           <Divider />
         </>

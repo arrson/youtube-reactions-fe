@@ -10,17 +10,23 @@ import {
   Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
-import { ChannelSearchResult } from 'services/api';
+import { Channel } from 'services/api';
 import { useAuth } from 'services/authContext';
 import { useEffect, useRef, useState } from 'react';
 import SearchResultList from './SearchResultList';
 
-const ReactorSearch = () => {
+interface Props {
+  onAddReactor: (c: Channel) => void;
+  selectedReactors: Channel[];
+}
+
+const ReactorSearch = ({ onAddReactor, selectedReactors }: Props) => {
   const { api } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [debouncedTerm, setDebouncedTerm] = useState(searchTerm);
-  const [searchResults, setSearchResults] = useState<ChannelSearchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<Channel[]>([]);
   const { isOpen, onToggle, onClose } = useDisclosure();
   const initialFocusRef = useRef();
 
@@ -28,10 +34,17 @@ const ReactorSearch = () => {
     setLoading(true);
     try {
       const res = await api.searchChannelName(searchTerm);
-      setSearchResults(res.data);
+      if (res.state === 'error') {
+        throw new Error(res.data.message);
+      }
+      const filteredRes = res.data.filter((r) => {
+        return selectedReactors.some((sr) => {
+          return r.id != sr.id;
+        });
+      });
+      setSearchResults(filteredRes);
     } catch (e) {
-      console.log('error searching');
-      console.log(e);
+      setError(e.message);
     }
     setLoading(false);
   };
@@ -54,7 +67,7 @@ const ReactorSearch = () => {
       <Popover
         placement="bottom"
         returnFocusOnClose={false}
-        isOpen={isOpen}
+        isOpen={isOpen && searchTerm}
         onClose={onClose}
         initialFocusRef={initialFocusRef}
       >
@@ -75,7 +88,10 @@ const ReactorSearch = () => {
           </InputGroup>
         </PopoverAnchor>
         <PopoverContent fontSize="xl">
-          {!loading && <SearchResultList results={searchResults} />}
+          {!!error && <div>{error}</div>}
+          {!loading && (
+            <SearchResultList results={searchResults} onClick={onAddReactor} />
+          )}
           {loading && (
             <Center>
               <Spinner
