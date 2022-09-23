@@ -4,7 +4,6 @@ import Sidebar from 'components/Sidebar';
 import LoginPanel from 'components/LoginPanel';
 import AddReactionPanel from 'components/AddReactionPanel';
 
-import { getYoutubeId } from 'services/utils';
 import { VideoReactions } from 'services/api';
 import { useAuth } from 'services/authContext';
 import { useEffect, useState } from 'react';
@@ -14,7 +13,11 @@ const PANEL = {
   create: 'create',
 };
 
-const SidebarWrapper = () => {
+interface SidebarProps {
+  id: string;
+}
+
+const SidebarWrapper = ({ id }: SidebarProps) => {
   const { api, user } = useAuth();
   const [videos, setVideos] = useState<VideoReactions | null>(null);
   const [showFormOnUserLogin, setShowFormOnUserLogin] =
@@ -25,7 +28,6 @@ const SidebarWrapper = () => {
   };
 
   const updateVideos = async () => {
-    const id = getYoutubeId(window.location.href);
     if (!id) {
       setVideos(null);
       return;
@@ -41,11 +43,7 @@ const SidebarWrapper = () => {
 
   useEffect(() => {
     updateVideos();
-    window.addEventListener('YT_VIDEO_ID', updateVideos, false);
-    return () => {
-      window.removeEventListener('YT_VIDEO_ID', updateVideos, false);
-    };
-  }, []);
+  }, [id]);
 
   // assume the user is logging in to create a reaction
   useEffect(() => {
@@ -85,10 +83,10 @@ const SidebarWrapper = () => {
   );
 };
 
-const Wrapper = () => (
+const Wrapper = (props: SidebarProps) => (
   <AuthProvider>
     <ChakraWrapper>
-      <SidebarWrapper />
+      <SidebarWrapper {...props} />
     </ChakraWrapper>
   </AuthProvider>
 );
