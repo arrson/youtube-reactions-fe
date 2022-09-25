@@ -1,4 +1,11 @@
-import { Box, Avatar, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
+import {
+  Avatar,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
 import { Channel } from 'services/api';
 
 interface Props {
@@ -9,15 +16,23 @@ interface Props {
 const SelectedReactorsList = ({ reactors, onDelete }: Props) => {
   const creatorList = reactors.map((creator) => {
     return (
-      <Tag key={creator.id} size="lg" colorScheme="blue" borderRadius="full">
-        <Avatar size="md" src={creator.img} name={creator.name} />
-        <TagLabel>{creator.name}</TagLabel>
-        <TagCloseButton onClick={() => onDelete(creator.id)} />
-      </Tag>
+      <WrapItem key={creator.id}>
+        <Tag size="lg" colorScheme="blue">
+          <Avatar
+            size="md"
+            src={creator.img}
+            name={creator.name}
+            ml={-1}
+            mr={2}
+          />
+          <TagLabel>{creator.name}</TagLabel>
+          <TagCloseButton onClick={() => onDelete(creator.id)} />
+        </Tag>
+      </WrapItem>
     );
   });
 
-  return <Box>{creatorList}</Box>;
+  return <Wrap>{creatorList}</Wrap>;
 };
 
 export default SelectedReactorsList;

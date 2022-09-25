@@ -33,14 +33,14 @@ const Options = () => {
 
   return (
     <Center>
-      <VStack>
-        <Box shadow="md" borderWidth="1px">
+      <VStack w="full" spacing={10} p={10}>
+        <Box w="25%">
           <ReactorSearch
             onAddReactor={addReactor}
             selectedReactors={userReactors}
           ></ReactorSearch>
         </Box>
-        <Box maxW="lg" shadow="md" borderWidth="1px">
+        <Box>
           <UserReactors
             reactors={userReactors}
             onDelete={deleteReactor}

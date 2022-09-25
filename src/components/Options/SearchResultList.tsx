@@ -1,4 +1,3 @@
-import { Divider } from '@chakra-ui/react';
 import { Channel } from 'services/api';
 import SearchOption from './SearchOption';
 
@@ -11,17 +10,14 @@ const SearchResultList = ({ results, onClick }: Props) => {
   return (
     <>
       {results.map((result) => (
-        <>
-          <SearchOption
-            key={result.id}
-            thumbnail={result.img}
-            name={result.name}
-            onClick={() => {
-              onClick(result);
-            }}
-          />
-          <Divider />
-        </>
+        <SearchOption
+          key={result.id}
+          thumbnail={result.img}
+          name={result.name}
+          onClick={() => {
+            onClick(result);
+          }}
+        />
       ))}
     </>
   );

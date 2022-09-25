@@ -10,6 +10,7 @@ import {
   Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
+import { differenceBy } from 'lodash';
 import { Channel } from 'services/api';
 import { useAuth } from 'services/authContext';
 import { useEffect, useRef, useState } from 'react';
@@ -37,11 +38,7 @@ const ReactorSearch = ({ onAddReactor, selectedReactors }: Props) => {
       if (res.state === 'error') {
         throw new Error(res.data.message);
       }
-      const filteredRes = res.data.filter((r) => {
-        return selectedReactors.some((sr) => {
-          return r.id != sr.id;
-        });
-      });
+      const filteredRes = differenceBy(res.data, selectedReactors, 'id');
       setSearchResults(filteredRes);
     } catch (e) {
       setError(e.message);
@@ -72,18 +69,19 @@ const ReactorSearch = ({ onAddReactor, selectedReactors }: Props) => {
         initialFocusRef={initialFocusRef}
       >
         <PopoverAnchor>
-          <InputGroup>
+          <InputGroup size="lg">
             <InputLeftElement pointerEvents="none">
               <SearchIcon />
             </InputLeftElement>
             <Input
+              bg="gray.600"
               onFocus={onToggle}
               onBlur={onToggle}
+              fontWeight="bold"
               onChange={(e) => setDebouncedTerm(e.target.value)}
-              display="inline-flex"
-              placeholder="Search..."
               ref={initialFocusRef}
               value={debouncedTerm}
+              placeholder="Search..."
             />
           </InputGroup>
         </PopoverAnchor>
