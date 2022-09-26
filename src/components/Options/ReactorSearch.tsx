@@ -13,7 +13,7 @@ import {
 import { differenceBy } from 'lodash';
 import { Channel } from 'services/api';
 import { useAuth } from 'services/authContext';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import SearchResultList from './SearchResultList';
 
 interface Props {
@@ -45,6 +45,10 @@ const ReactorSearch = ({ onAddReactor, selectedReactors }: Props) => {
     }
     setLoading(false);
   };
+
+  const filteredSearchRes = useMemo(() => {
+    return differenceBy(searchResults, selectedReactors, 'id');
+  }, [searchResults, selectedReactors]);
 
   useEffect(() => {
     const timer = setTimeout(() => setSearchTerm(debouncedTerm), 800);
@@ -88,7 +92,10 @@ const ReactorSearch = ({ onAddReactor, selectedReactors }: Props) => {
         <PopoverContent fontSize="xl">
           {!!error && <div>{error}</div>}
           {!loading && (
-            <SearchResultList results={searchResults} onClick={onAddReactor} />
+            <SearchResultList
+              results={filteredSearchRes}
+              onClick={onAddReactor}
+            />
           )}
           {loading && (
             <Center>
