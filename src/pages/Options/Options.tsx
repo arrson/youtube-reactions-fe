@@ -40,7 +40,7 @@ const Options = () => {
             selectedReactors={userReactors}
           ></ReactorSearch>
         </Box>
-        <Box>
+        <Box w="40%">
           <UserReactors
             reactors={userReactors}
             onDelete={deleteReactor}

@@ -32,7 +32,7 @@ const SelectedReactorsList = ({ reactors, onDelete }: Props) => {
     );
   });
 
-  return <Wrap>{creatorList}</Wrap>;
+  return <Wrap justify="center">{creatorList}</Wrap>;
 };
 
 export default SelectedReactorsList;
