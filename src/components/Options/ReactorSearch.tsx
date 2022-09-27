@@ -89,7 +89,7 @@ const ReactorSearch = ({ onAddReactor, selectedReactors }: Props) => {
             />
           </InputGroup>
         </PopoverAnchor>
-        <PopoverContent fontSize="xl">
+        <PopoverContent fontSize="xl" w="full">
           {!!error && <div>{error}</div>}
           {!loading && (
             <SearchResultList

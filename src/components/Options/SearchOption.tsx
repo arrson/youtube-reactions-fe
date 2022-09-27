@@ -9,7 +9,7 @@ interface Props {
 const SearchOption = ({ thumbnail, name, onClick }: Props) => {
   return (
     <>
-      <Button size="lg" onClick={onClick}>
+      <Button size="lg" onClick={onClick} h="100%" borderRadius="none">
         <Flex>
           <Avatar src={thumbnail} />
           <Box ml="3">
@@ -17,7 +17,6 @@ const SearchOption = ({ thumbnail, name, onClick }: Props) => {
           </Box>
         </Flex>
       </Button>
-      <Divider />
     </>
   );
 };
