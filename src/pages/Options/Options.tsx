@@ -18,7 +18,6 @@ const Options = () => {
   const setReactors = (channels: Channel[]) => {
     setUserReactors(channels);
     chrome.storage.local.set({ userReactors: channels }, function () {
-      //TODO Error handling
       console.log(chrome.runtime.lastError);
     });
   };

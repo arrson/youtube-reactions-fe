@@ -85,7 +85,7 @@ const ReactorSearch = ({ onAddReactor, selectedReactors }: Props) => {
               onChange={(e) => setDebouncedTerm(e.target.value)}
               ref={initialFocusRef}
               value={debouncedTerm}
-              placeholder="Search..."
+              placeholder="Add channels you'd like to see reactions from"
             />
           </InputGroup>
         </PopoverAnchor>

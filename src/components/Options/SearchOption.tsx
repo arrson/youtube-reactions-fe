@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Divider, Flex, Text } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Text } from '@chakra-ui/react';
 
 interface Props {
   thumbnail: string;
