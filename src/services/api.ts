@@ -55,26 +55,34 @@ export const getApi = (token?: string) => {
     data?: object
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<{ state: ResponseStatus; data: any; status: number }> => {
-    const requestHeaders: HeadersInit = new Headers();
-    requestHeaders.set('Accept', 'application/json');
-    requestHeaders.set('Content-Type', 'application/json');
+    try {
+      const requestHeaders: HeadersInit = new Headers();
+      requestHeaders.set('Accept', 'application/json');
+      requestHeaders.set('Content-Type', 'application/json');
 
-    if (token) {
-      requestHeaders.set('Authorization', `Bearer ${token}`);
+      if (token) {
+        requestHeaders.set('Authorization', `Bearer ${token}`);
+      }
+
+      const response = await fetch(`${BASE_URL}${url}`, {
+        method: method,
+        headers: requestHeaders,
+        body: data ? JSON.stringify(data) : null,
+      });
+
+      const content = await response.json();
+
+      const state =
+        response.status < 200 || response.status > 300 ? 'error' : 'success';
+
+      return { state, data: content, status: response.status };
+    } catch (e) {
+      return {
+        state: 'error',
+        status: 400,
+        data: { message: e.message, statusCode: 400 },
+      };
     }
-
-    const response = await fetch(`${BASE_URL}${url}`, {
-      method: method,
-      headers: requestHeaders,
-      body: data ? JSON.stringify(data) : null,
-    });
-
-    const content = await response.json();
-
-    const state =
-      response.status < 200 || response.status > 300 ? 'error' : 'success';
-
-    return { state, data: content, status: response.status };
   };
 
   return {
