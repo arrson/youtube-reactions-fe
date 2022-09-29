@@ -31,18 +31,36 @@ const Page = ({ formValue, onSubmit }: PageProps) => {
     }
 
     try {
-      const { data: videos } = await api.getVideosInfo(
-        [original, reaction].join(',')
-      );
+      const res = await api.getVideosInfo([original, reaction].join(','));
+      if (res.state === 'error') {
+        throw new Error(res.data.message);
+      }
+
+      let resolved = {
+        original: res.data.find((d) => d.id === original),
+        reaction: res.data.find((d) => d.id === reaction),
+      };
+
+      if (!resolved.original || !resolved.reaction) {
+        throw new Error('unable to get video.');
+      }
+
+      // attempt to detect direction of videos
+      if (
+        resolved.original.title.toLowerCase().includes('react') &&
+        !resolved.reaction.title.toLowerCase().includes('react')
+      ) {
+        resolved = { original: resolved.reaction, reaction: resolved.original };
+      }
+
       setIsLoading(false);
       onSubmit({
         ...formValue,
-        original: videos.find((d) => d.id === original),
-        reaction: videos.find((d) => d.id === reaction),
+        ...resolved,
         url,
       });
     } catch (e) {
-      setError('Invalid YouTube Url');
+      setError(e.message);
       setIsLoading(false);
     }
   };
