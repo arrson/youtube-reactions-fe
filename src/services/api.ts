@@ -87,9 +87,20 @@ export const getApi = (token?: string) => {
     return { state, data: content, status: response.status };
   };
 
+  let userReactors: Channel[] | undefined = undefined;
+  chrome.storage.local.get('userReactors', function (result) {
+    if (!result.userReactors) return;
+    userReactors = result.userReactors;
+  });
+
   return {
-    getReactionVideos: (id: string): Promise<GetReactionVideos | Error> =>
-      makeRequest('get', `/videos/${id}/videos`),
+    getReactionVideos: (id: string): Promise<GetReactionVideos | Error> => {
+      let route = `/videos/${id}/videos`;
+      if (userReactors) {
+        route = route.concat('', `?${new URLSearchParams({ channelId: userReactors.map(u => u.id).join(',') })}`)
+      }
+      return makeRequest('get', route);
+    },
     getVideosInfo: (id: string): Promise<GetVideos | Error> =>
       makeRequest('get', `/videos?id=${id}`),
     createReaction: (videoId: string, reactionId: string) =>
