@@ -4,15 +4,17 @@ import ReactorSearch from 'components/Options/ReactorSearch';
 import { Box, Center, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { Channel } from 'services/api';
+import { getChromeStorage, LOCAL_STORAGE } from 'services/utils';
 
 const Options = () => {
   const [userReactors, setUserReactors] = useState<Channel[]>([]);
 
   useEffect(() => {
-    chrome.storage.local.get(['userReactors'], function (result) {
-      if (!result.userReactors) return;
-      setUserReactors(result.userReactors);
-    });
+    const fetchUserReactors = async () => {
+      const userReactors = await getChromeStorage(LOCAL_STORAGE.userReactors);
+      setUserReactors(userReactors);
+    };
+    fetchUserReactors();
   }, []);
 
   const setReactors = (channels: Channel[]) => {

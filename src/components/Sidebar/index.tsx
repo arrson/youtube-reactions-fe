@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { TbPlus } from 'react-icons/tb';
 
-import { getYoutubeId } from 'services/utils';
+import { getChromeStorage, getYoutubeId, LOCAL_STORAGE } from 'services/utils';
 import { VideoReactions } from 'services/api';
 import { useAuth } from 'services/authContext';
 
@@ -87,8 +87,8 @@ const Sidebar = ({ toggleLoginPanel }: { toggleLoginPanel: () => void }) => {
       setVideos(null);
       return;
     }
-
-    const { data: videos } = await api.getReactionVideos(id);
+    const userReactors = await getChromeStorage(LOCAL_STORAGE.userReactors);
+    const { data: videos } = await api.getReactionVideos(id, userReactors);
     setVideos(videos);
   };
 

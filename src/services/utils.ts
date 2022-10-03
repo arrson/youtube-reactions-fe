@@ -6,6 +6,10 @@ export const STORAGE = {
   token: 'token',
 };
 
+export const LOCAL_STORAGE = {
+  userReactors: 'userReactors',
+};
+
 // Return video id or false
 const regExp =
   /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/; // eslint-disable-line
@@ -33,3 +37,14 @@ export const generateUserID = (length = 36): string => {
     return result;
   }
 };
+
+export const getChromeStorage = (key: string): Promise<any | Error> =>
+  new Promise((resolve, reject) => {
+    chrome.storage.local.get(key, (value) => {
+      if (chrome.runtime.lastError) {
+        reject(chrome.runtime.lastError.message);
+      } else {
+        resolve(value[key]);
+      }
+    });
+  });
