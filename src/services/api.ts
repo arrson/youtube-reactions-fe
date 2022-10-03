@@ -97,7 +97,9 @@ export const getApi = (token?: string) => {
     getReactionVideos: (id: string): Promise<GetReactionVideos | Error> => {
       let route = `/videos/${id}/videos`;
       if (userReactors) {
-        route = route.concat('', `?${new URLSearchParams({ channelId: userReactors.map(u => u.id).join(',') })}`)
+        route += `?${new URLSearchParams({
+          channelId: userReactors.map((u) => u.id).join(','),
+        })}`;
       }
       return makeRequest('get', route);
     },
@@ -111,7 +113,5 @@ export const getApi = (token?: string) => {
       makeRequest('get', `/users/profile`),
     searchChannelName: (name: string): Promise<GetChannelSearch | Error> =>
       makeRequest('get', `/search?name=${name}`),
-    getChannelInfo: (id: string[]): Promise<any | Error> =>
-      makeRequest('get', `/channel/`),
   };
 };

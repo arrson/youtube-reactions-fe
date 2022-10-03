@@ -1,4 +1,4 @@
-import { Box, Divider } from '@chakra-ui/react';
+import { Divider } from '@chakra-ui/react';
 import { Channel } from 'services/api';
 import SearchOption from './SearchOption';
 

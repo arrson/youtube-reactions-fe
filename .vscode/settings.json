@@ -1,4 +1,3 @@
 {
-  "editor.formatOnSave": true,
-  "jest.jestCommandLine": "jest --config .\\test\\jest-e2e.json"
+  "editor.formatOnSave": true
 }
