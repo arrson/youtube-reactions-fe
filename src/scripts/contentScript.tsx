@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import Sidebar from 'scenes/Sidebar';
-import { MESSAGES } from 'services/utils';
+import { getYoutubeId } from 'services/utils';
 
 (() => {
   const waitForElm = (selector: string): Promise<Element | null> => {
@@ -25,7 +25,12 @@ import { MESSAGES } from 'services/utils';
   };
 
   const SIDEBAR_ID = 'sidebar-extention-container';
-  const loadSidebar = async () => {
+  const updateSidebar = async () => {
+    document.getElementById(SIDEBAR_ID)?.remove();
+
+    const id = getYoutubeId(window.location.href);
+    if (!id) return;
+
     const container = document.createElement('div');
     container.id = SIDEBAR_ID;
 
@@ -35,25 +40,13 @@ import { MESSAGES } from 'services/utils';
     parentNode?.prepend(container);
     createRoot(container).render(
       <React.StrictMode>
-        <Sidebar />
+        <Sidebar id={id} />
       </React.StrictMode>
     );
   };
 
   window.addEventListener('load', () => {
-    let isLoaded = false;
-    chrome.runtime.onMessage.addListener((request) => {
-      if (request.message === MESSAGES.videoId) {
-        if (!isLoaded) {
-          loadSidebar();
-          isLoaded = true;
-        }
-        // send a custom event to the react component to update
-        const event = new CustomEvent('YT_VIDEO_ID', { detail: {} });
-        window.dispatchEvent(event);
-      }
-
-      return true;
-    });
+    document.body.addEventListener('yt-navigate-start', updateSidebar);
+    updateSidebar();
   });
 })();

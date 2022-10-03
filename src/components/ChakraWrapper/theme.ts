@@ -6,6 +6,7 @@ const colors = {
   color: mode('gray.800', '#fff'),
   background: mode('#F9F9F9', '#181818'),
   contentBackground: mode('#EDF2F6', '#212121'),
+  borderColor: mode('gray.800', 'gray.200'),
 };
 
 const youtubeContainer = document.getElementById('contentContainer') as Element;
@@ -90,6 +91,12 @@ const components = {
         p: '2',
       }),
     },
+  },
+  Divider: {
+    baseStyle: (props: StyleFunctionProps) => ({
+      borderColor: colors.borderColor(props),
+      opacity: 0.1,
+    }),
   },
 };
 

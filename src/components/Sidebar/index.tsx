@@ -1,25 +1,19 @@
-import { useEffect, useState } from 'react';
 import {
   Text,
   LinkBox,
   LinkOverlay,
-  useDisclosure,
   Button,
   IconButton,
   Flex,
   Box,
   Tooltip,
+  Divider,
 } from '@chakra-ui/react';
+import { useMemo } from 'react';
 import { TbPlus } from 'react-icons/tb';
-
-import { getChromeStorage, getYoutubeId, LOCAL_STORAGE } from 'services/utils';
-import { VideoReactions } from 'services/api';
-import { useAuth } from 'services/authContext';
-
 import Container from 'components/Container';
 import Video from 'components/Video';
-import AddReactionModal from '../AddReactionModal';
-
+import { VideoReactions } from 'services/api';
 import styles from './styles.module.scss';
 
 const getUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
@@ -68,108 +62,76 @@ const VideoLink = ({
   </LinkBox>
 );
 
-const Sidebar = ({ toggleLoginPanel }: { toggleLoginPanel: () => void }) => {
-  const { api, user } = useAuth();
-  const [videos, setVideos] = useState<VideoReactions | null>(null);
-  const { isOpen, onToggle } = useDisclosure();
+const Sidebar = ({
+  videos,
+  onCreate,
+}: {
+  videos: VideoReactions;
+  onCreate: () => void;
+}) => {
+  const videoSections = useMemo(() => {
+    const sections = [];
 
-  const showCreateReactionModal = () => {
-    // show login panel if user is not logged in
-    if (!user) {
-      toggleLoginPanel();
+    if (videos.reactions.length) {
+      sections.push(
+        <Box key="reactions" mb="2">
+          <Title
+            title="Reactions"
+            onToggle={onCreate}
+            showAddReaction={!sections.length}
+          />
+          {videos.reactions.map((d) => (
+            <VideoLink key={d.id} {...d} />
+          ))}
+        </Box>
+      );
     }
-    onToggle();
-  };
 
-  const updateVideos = async () => {
-    const id = getYoutubeId(window.location.href);
-    if (!id) {
-      setVideos(null);
-      return;
+    if (videos.reactionTo.length) {
+      sections.push(
+        <Box key="reactionTo" mb="2">
+          <Title
+            title="Reaction To"
+            onToggle={onCreate}
+            showAddReaction={!sections.length}
+          />
+          {videos.reactionTo.map((d) => (
+            <VideoLink key={d.id} {...d} />
+          ))}
+        </Box>
+      );
     }
-    const userReactors = await getChromeStorage(LOCAL_STORAGE.userReactors);
-    const { data: videos } = await api.getReactionVideos(id, userReactors);
-    setVideos(videos);
-  };
 
-  useEffect(() => {
-    updateVideos();
-    window.addEventListener('YT_VIDEO_ID', updateVideos, false);
-    return () => {
-      window.removeEventListener('YT_VIDEO_ID', updateVideos, false);
-    };
-  }, []);
+    if (videos.otherReactions.length) {
+      sections.push(
+        <Box key="otherReactions" mb="2">
+          <Title
+            title="Other Reactions"
+            onToggle={onCreate}
+            showAddReaction={!sections.length}
+          />
+          {videos.otherReactions.map((d) => (
+            <VideoLink key={d.id} {...d} />
+          ))}
+        </Box>
+      );
+    }
 
-  if (!videos) return null;
+    return sections;
+  }, [videos]);
 
-  const sections = [];
-
-  if (videos.reactions.length) {
-    sections.push(
-      <Box key="reactions" mb="2">
-        <Title
-          title="Reactions"
-          onToggle={showCreateReactionModal}
-          showAddReaction={!sections.length}
-        />
-        {videos.reactions.map((d) => (
-          <VideoLink key={d.id} {...d} />
-        ))}
-      </Box>
-    );
-  }
-
-  if (videos.reactionTo.length) {
-    sections.push(
-      <Box key="reactionTo" mb="2">
-        <Title
-          title="Reaction To"
-          onToggle={showCreateReactionModal}
-          showAddReaction={!sections.length}
-        />
-        {videos.reactionTo.map((d) => (
-          <VideoLink key={d.id} {...d} />
-        ))}
-      </Box>
-    );
-  }
-
-  if (videos.otherReactions.length) {
-    sections.push(
-      <Box key="otherReactions" mb="2">
-        <Title
-          title="Other Reactions"
-          onToggle={showCreateReactionModal}
-          showAddReaction={!sections.length}
-        />
-        {videos.otherReactions.map((d) => (
-          <VideoLink key={d.id} {...d} />
-        ))}
-      </Box>
-    );
-  }
-
-  const content = sections.length ? (
-    sections
+  const content = videoSections.length ? (
+    <>
+      {videoSections}
+      <Divider mb={2} />
+    </>
   ) : (
-    <Button leftIcon={<TbPlus />} onClick={showCreateReactionModal}>
+    <Button mb={2} leftIcon={<TbPlus />} onClick={onCreate}>
       Add Reaction
     </Button>
   );
 
-  return (
-    <Container>
-      <AddReactionModal
-        isOpen={!!user && isOpen}
-        onToggle={onToggle}
-        onSubmit={() => {
-          updateVideos();
-          onToggle();
-        }}
-      />
-      {content}
-    </Container>
-  );
+  return <Container>{content}</Container>;
 };
 
 export default Sidebar;

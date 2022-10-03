@@ -13,7 +13,6 @@ module.exports = (env) => {
   const options = {
     mode: isDevelopment ? 'development' : 'production',
     entry: {
-      background: [ROOT + '/src/scripts/background'],
       contentScript: [ROOT + '/src/scripts/contentScript'],
       options: [ROOT + '/src/pages/Options/index'],
     },

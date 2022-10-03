@@ -1,14 +1,10 @@
 {
   "manifest_version": 3,
   "name": "Youtube Reactions",
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqFDdkRpaOGQkz+i0wr3Hy7Z7FA+DsZigmZWctudtckj+nYg+9OJT/L4D27KyHZJDxPbmcgmWHaLFIngmoGqxP0gVq9KDrHfH76ST505lklQWCRzw90bsWntpeIfVYp95wP2ScyzFM+pvRHzpnyQMEEYlHyWwBpPXUn2ZUQYj7oEsh7MhK4r0UVXoeceS0pU6kASxhIpWVXZXaVpXDNPAhnsmMAKvzo4oJ+QaNZgzGV36ifTn/nA3AvVCu9pOdrPkQYT274I6m3RSEMialinetNaSoL5pA/QhiiTKvmqCsJVln/C3R+GDN+BrWxuhvB4s/XO8xXb2uc8z/1B65lbgUQIDAQAB",
-  "description": "",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmqWywIsNrA01kcC4z8QLMIReKb6cPVKap1JjvT528gvzoZ3i3zfaPsqAtLJKdSBwdnJOCnJ13FL+v/RnBvkkavMm09bhMSA/rBTRFSxTeeeBlJAJWK7Hd86ranWJS5NCA61m+uLV0QRGP/h/91DaTfYLsa9y9+wh2u8ThmDst+OLBvQZ1hLEvSUQqfIWRO5gAlQTqm7yhOshwvNVzKyJgu9T7LZKd3j9HfxaWSiTghcCxcXKr6xZ9y23+/RD5GbyT22GF0MuQOuHRawZtXZMdpt9qQRCMFhgAEeP5MqniogqxicuoLn0uGKRKrMW+LjBdu2443PJiPpcfdeCQ/iTqQIDAQAB",
+  "description": "Show reactions to youtube videos",
   "options_page": "options.html",
-  "background": {
-    "service_worker": "background.bundle.js"
-  },
-  "permissions": ["tabs", "webNavigation", "scripting", "storage"],
-  "host_permissions": ["https://*.youtube.com/*"],
+  "permissions": ["storage"],
   "action": {
     "default_icon": "icon-48.png"
   },

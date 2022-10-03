@@ -1,13 +1,10 @@
-.googleButton {
-  text-decoration: none;
-}
-
 .panel {
   position: fixed;
   right: 12px;
-  top: 12px;
-  width: 300px;
+  top: 68px;
+  width: 400px;
   z-index: 10000;
-  border-radius: 4px;
+  border-radius: 6px;
   box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+  overflow: hidden;
 }
