@@ -7,6 +7,7 @@ import AddReactionPanel from 'components/AddReactionPanel';
 import { VideoReactions } from 'services/api';
 import { useAuth } from 'services/authContext';
 import { useEffect, useState } from 'react';
+import { getChromeStorage, LOCAL_STORAGE } from 'services/utils';
 
 const PANEL = {
   login: 'login',
@@ -33,7 +34,8 @@ const SidebarWrapper = ({ id }: SidebarProps) => {
       return;
     }
 
-    const res = await api.getReactionVideos(id);
+    const userReactors = await getChromeStorage(LOCAL_STORAGE.userReactors);
+    const res = await api.getReactionVideos(id, userReactors);
     if (res.state === 'success') {
       setVideos(res.data);
     } else {

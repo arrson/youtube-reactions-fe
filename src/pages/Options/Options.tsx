@@ -10,11 +10,10 @@ const Options = () => {
   const [userReactors, setUserReactors] = useState<Channel[]>([]);
 
   useEffect(() => {
-    const fetchUserReactors = async () => {
+    (async () => {
       const userReactors = await getChromeStorage(LOCAL_STORAGE.userReactors);
-      setUserReactors(userReactors);
-    };
-    fetchUserReactors();
+      setUserReactors(userReactors || []);
+    })();
   }, []);
 
   const setReactors = (channels: Channel[]) => {

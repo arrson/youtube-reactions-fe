@@ -13,7 +13,7 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-const SelectedReactorsList = ({ reactors, onDelete }: Props) => {
+const UserReactors = ({ reactors, onDelete }: Props) => {
   const creatorList = reactors.map((creator) => {
     return (
       <WrapItem key={creator.id}>
@@ -35,4 +35,4 @@ const SelectedReactorsList = ({ reactors, onDelete }: Props) => {
   return <Wrap justify="center">{creatorList}</Wrap>;
 };
 
-export default SelectedReactorsList;
+export default UserReactors;
