@@ -18,10 +18,12 @@
     "prettier:fix": "prettier ./src --write"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.10",
     "@chakra-ui/react": "^2.2.6",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "framer-motion": "^7.2.1",
+    "lodash": "^4.17.21",
     "react-icons": "^4.4.0"
   },
   "devDependencies": {
