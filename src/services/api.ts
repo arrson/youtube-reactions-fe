@@ -10,6 +10,12 @@ interface Video {
   createdAt: string;
 }
 
+export interface Channel {
+  id: string;
+  name: string;
+  img: string;
+}
+
 export interface VideoReactions {
   reactions: Video[];
   reactionTo: Video[];
@@ -46,6 +52,10 @@ interface GetUserProfile extends BaseSuccess {
   data: User;
 }
 
+interface GetChannelSearch extends BaseSuccess {
+  data: Channel[];
+}
+
 export const getBaseUrl = () => BASE_URL;
 
 export const getApi = (token?: string) => {
@@ -78,8 +88,18 @@ export const getApi = (token?: string) => {
   };
 
   return {
-    getReactionVideos: (id: string): Promise<GetReactionVideos | Error> =>
-      makeRequest('get', `/videos/${id}/videos`),
+    getReactionVideos: (
+      id: string,
+      channels?: Channel[]
+    ): Promise<GetReactionVideos | Error> => {
+      let route = `/videos/${id}/videos`;
+      if (channels) {
+        route += `?${new URLSearchParams({
+          channelId: channels.map((u) => u.id).join(','),
+        })}`;
+      }
+      return makeRequest('get', route);
+    },
     getVideosInfo: (id: string): Promise<GetVideos | Error> =>
       makeRequest('get', `/videos?id=${id}`),
     createReaction: (videoId: string, reactionId: string) =>
@@ -88,5 +108,7 @@ export const getApi = (token?: string) => {
       makeRequest('post', `/reactions/${reactionId}/report`),
     getUserProfile: (): Promise<GetUserProfile | Error> =>
       makeRequest('get', `/users/profile`),
+    searchChannelName: (name: string): Promise<GetChannelSearch | Error> =>
+      makeRequest('get', `/search?name=${name}`),
   };
 };
